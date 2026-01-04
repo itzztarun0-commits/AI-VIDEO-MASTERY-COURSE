@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="hi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI वीडियो मास्टरी – LIVE ट्रेनिंग</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Inter:wght@400;600;800&display=swap');
+        
+        :root {
+            --primary: #ffd700;
+            --secondary: #00ff99;
+            --bg-dark: #05070a;
+            --card-bg: #111827;
+        }
+
+        body {
+            font-family: 'Hind', 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .btn-pulse {
+            animation: pulse-animation 2s infinite;
+        }
+
+        @keyframes pulse-animation {
+            0% { box-shadow: 0 0 0 0px rgba(255, 215, 0, 0.7); }
+            100% { box-shadow: 0 0 0 20px rgba(255, 215, 0, 0); }
+        }
+
+        .gradient-border {
+            border: 2px solid transparent;
+            background-image: linear-gradient(var(--card-bg), var(--card-bg)), linear-gradient(to right, #ffd700, #ff8c00);
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+        }
+
+        /* AI Loading Spinner */
+        .loader {
+            border-top-color: #ffd700;
+            animation: spinner 1.5s linear infinite;
+        }
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .review-img {
+            transition: transform 0.3s ease;
+        }
+        .review-img:hover {
+            transform: scale(1.03);
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #05070a; }
+        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 10px; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Notification Toast -->
+    <div id="notifyBox" class="fixed top-6 left-1/2 -translate-x-1/2 z-[100] hidden transition-all duration-500">
+        <div class="glass-card px-6 py-3 rounded-full flex items-center space-x-3 shadow-2xl border-yellow-500/30 border">
+            <div class="w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
+            <p class="text-sm font-medium" id="notifyContent"></p>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden pt-20 pb-10 px-4">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-500/10 via-transparent to-transparent -z-10"></div>
+        
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="inline-block px-4 py-1.5 mb-6 rounded-full border border-yellow-500/30 bg-yellow-500/10 text-yellow-400 font-bold text-sm tracking-wider animate-bounce">
+                🚀 100% LIVE वर्कशॉप (कोई रिकॉर्डिंग नहीं)
+            </div>
+            <h1 class="text-4xl md:text-7xl font-extrabold mb-6 leading-tight">
+                AI वीडियो <span class="text-yellow-400 glow-text">मास्टरी</span>
+                <br><span class="text-3xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-yellow-200 to-yellow-500">LIVE ट्रेनिंग</span>
+            </h1>
+            <p class="text-lg md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                AI से प्रोफेशनल वीडियो बनाना सीखें और Instagram पर 10x तेज़ी से वायरल हों। 
+                <span class="block mt-2 font-bold text-white italic">यह कोर्स सिर्फ आज के लिए नहीं, अगले 5 साल के भविष्य के लिए है।</span>
+            </p>
+            
+            <div class="flex flex-col items-center space-y-4">
+                <a href="https://rzp.io/rzp/pbvRCE2" class="btn-pulse inline-flex items-center px-8 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-black text-xl rounded-full transition hover:scale-105 active:scale-95 shadow-xl">
+                    🚀 अभी रजिस्टर करें (सीमित सीटें)
+                </a>
+                <p class="text-yellow-500 font-bold flex items-center">
+                    <i class="fas fa-clock mr-2"></i> 2 घंटे का मास्टरक्लास | विशेष ऑफर केवल आज के लिए
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Urgency Ticker -->
+    <div class="bg-yellow-500 text-black py-3 font-black text-center sticky top-0 z-50 shadow-lg">
+        <div class="flex justify-center space-x-8 text-sm md:text-lg">
+            <span>⚠️ बची हुई सीटें: <span id="seats" class="text-red-700">17</span></span>
+            <span>🔥 ऑफर खत्म होगा: <span id="countdown">00:00:00</span></span>
+        </div>
+    </div>
+
+    <!-- Student Reviews Section -->
+    <section class="py-16 px-4 bg-gray-900/30">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 italic">हमारे छात्रों के <span class="text-yellow-400">रिव्यूज</span></h2>
+                <p class="text-gray-400 italic">देखें लोग हमारे बारे में क्या कह रहे हैं</p>
+                <div class="w-24 h-1 bg-yellow-500 mx-auto mt-4"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="flex justify-center">
+                    <div class="glass-card p-2 rounded-2xl shadow-2xl border-yellow-500/20 max-w-sm overflow-hidden">
+                        <img src="image_028f5f.jpg" alt="Student Review 1" class="rounded-xl w-full h-auto review-img" onerror="this.src='https://placehold.co/400x600?text=Review+1'">
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <div class="glass-card p-2 rounded-2xl shadow-2xl border-yellow-500/20 max-w-sm overflow-hidden">
+                        <img src="image_028f29.jpg" alt="Student Review 2" class="rounded-xl w-full h-auto review-img" onerror="this.src='https://placehold.co/400x600?text=Review+2'">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Content Assistant Section ✨ -->
+    <section class="py-16 px-4 bg-gradient-to-r from-blue-900/20 to-purple-900/20 border-y border-white/5">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-5xl font-bold mb-6 italic">हमारे <span class="text-yellow-400">AI असिस्टेंट</span> को आजमाएं ✨</h2>
+            <p class="text-gray-400 mb-10 italic">वर्कशॉप जॉइन करने से पहले AI की शक्ति देखें। अपना टॉपिक लिखें और वायरल कंटेंट जनरेट करें!</p>
+
+            <div class="glass-card p-8 rounded-3xl border border-yellow-500/30 shadow-2xl">
+                <div class="mb-6">
+                    <input type="text" id="aiTopic" class="w-full bg-gray-800/50 border border-gray-700 rounded-xl px-4 py-4 focus:outline-none focus:border-yellow-500 text-white placeholder-gray-500 text-center" placeholder="अपना टॉपिक यहाँ लिखें (जैसे: सेहत, टेक्नोलॉजी, मोटिवेशन...)">
+                </div>
+                <div class="flex flex-col md:flex-row gap-4 justify-center">
+                    <button onclick="handleAICall('script')" id="scriptBtn" class="flex-1 py-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-bold rounded-xl transition hover:scale-[1.03] flex items-center justify-center disabled:opacity-50">
+                        <span id="scriptText">🎬 रील स्क्रिप्ट जनरेट करें</span>
+                        <div id="scriptLoader" class="hidden loader rounded-full border-2 border-t-2 border-white/20 h-5 w-5 ml-3"></div>
+                    </button>
+                    <button onclick="handleAICall('hooks')" id="hookBtn" class="flex-1 py-4 bg-gradient-to-r from-teal-600 to-green-700 text-white font-bold rounded-xl transition hover:scale-[1.03] flex items-center justify-center disabled:opacity-50">
+                        <span id="hookText">🔥 वायरल हुक्स जनरेट करें</span>
+                        <div id="hookLoader" class="hidden loader rounded-full border-2 border-t-2 border-white/20 h-5 w-5 ml-3"></div>
+                    </button>
+                </div>
+
+                <!-- AI Output -->
+                <div id="aiResultContainer" class="hidden mt-8 text-left bg-black/50 p-6 rounded-2xl border border-white/10 shadow-inner">
+                    <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
+                        <span class="text-yellow-400 font-bold text-xs tracking-widest uppercase" id="resultLabel">AI द्वारा जनरेट किया गया</span>
+                        <button onclick="copyToClipboard()" class="text-gray-400 hover:text-white text-sm flex items-center">
+                            <i class="fas fa-copy mr-2"></i> कॉपी करें
+                        </button>
+                    </div>
+                    <div id="aiResultText" class="text-gray-200 leading-relaxed whitespace-pre-wrap font-mono text-sm"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Index Section ✨ -->
+    <section class="py-16 px-4 bg-gray-900/20">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 italic">इस कोर्स का <span class="text-yellow-400">इंडेक्स (पाठ्यक्रम)</span></h2>
+                <p class="text-gray-400 italic">हम आपको स्टेप-बाय-स्टेप कंटेंट क्रिएशन का मास्टर बनाएंगे</p>
+                <div class="w-24 h-1 bg-yellow-500 mx-auto mt-4"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Point 1: Prompts -->
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-yellow-500 flex items-start space-x-4">
+                    <div class="text-yellow-400 text-3xl mt-1"><i class="fas fa-keyboard"></i></div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">परफेक्ट प्रॉम्प्ट बनाना (Prompt Engineering)</h3>
+                        <p class="text-gray-400 text-sm">AI से काम करवाने की कला। हम आपको वो शब्द सिखाएंगे जिससे AI आपके दिमाग की बात समझ जाएगा।</p>
+                    </div>
+                </div>
+
+                <!-- Point 2: No Camera Video -->
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-blue-500 flex items-start space-x-4">
+                    <div class="text-blue-400 text-3xl mt-1"><i class="fas fa-video-slash"></i></div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">बिना कैमरा और माइक के वीडियो बनाना</h3>
+                        <p class="text-gray-400 text-sm">चेहरा दिखाने या महंगा माइक खरीदने की जरूरत नहीं। AI अवतार और वॉइस के साथ प्रोफेशनल वीडियो बनाना सीखें।</p>
+                    </div>
+                </div>
+
+                <!-- Point 3: Business Content -->
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-green-500 flex items-start space-x-4">
+                    <div class="text-green-400 text-3xl mt-1"><i class="fas fa-briefcase"></i></div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">बिज़नेस के लिए वीडियो और पोस्टर्स</h3>
+                        <p class="text-gray-400 text-sm">अपने खुद के बिज़नेस या क्लाइंट्स के लिए वायरल होने वाले वीडियो और अमेजिंग पोस्टर्स सिर्फ मिनटों में बनाना।</p>
+                    </div>
+                </div>
+
+                <!-- Point 4: Multi-language -->
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-purple-500 flex items-start space-x-4">
+                    <div class="text-purple-400 text-3xl mt-1"><i class="fas fa-globe"></i></div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">किसी भी भाषा में AI वीडियो</h3>
+                        <p class="text-gray-400 text-sm">भाषा की दीवार खत्म! इंग्लिश, स्पेनिश या अपनी मातृभाषा में ग्लोबल वीडियो बनाना और पूरी दुनिया तक पहुँचना।</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center bg-yellow-500/10 p-6 rounded-2xl border border-yellow-500/20">
+                <p class="text-yellow-400 font-bold text-lg italic">
+                    <i class="fas fa-star mr-2"></i> बोनस: रील वायरल करने की सीक्रेट स्ट्रेटेजी और टूल्स की लिस्ट!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Form Section -->
+    <section class="py-16 px-4">
+        <div class="max-w-xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold mb-2 italic">अपनी <span class="text-yellow-400">सीट</span> रिजर्व करें</h2>
+                <p class="text-gray-400 italic">नीचे दी गई डिटेल्स भरें, हम आपसे संपर्क करेंगे</p>
+            </div>
+            
+            <div class="glass-card p-8 rounded-3xl border border-yellow-500/20 shadow-2xl" id="formContainer">
+                <form id="regForm" class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-gray-300">आपका पूरा नाम *</label>
+                        <input type="text" id="name" required class="w-full bg-gray-800/50 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-yellow-500 text-white placeholder-gray-500" placeholder="यहाँ लिखें">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-gray-300">WhatsApp नंबर *</label>
+                        <input type="tel" id="phone" required class="w-full bg-gray-800/50 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-yellow-500 text-white placeholder-gray-500" placeholder="98XXXXXXXX">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-gray-300">ईमेल (वैकल्पिक)</label>
+                        <input type="email" id="email" class="w-full bg-gray-800/50 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-yellow-500 text-white placeholder-gray-500" placeholder="example@email.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-gray-300">आप अभी क्या काम करते हैं? *</label>
+                        <select id="work" required class="w-full bg-gray-800/50 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-yellow-500 text-white">
+                            <option value="" disabled selected>सेलेक्ट करें</option>
+                            <option value="Student">छात्र (Student)</option>
+                            <option value="Teacher">शिक्षक (Teacher)</option>
+                            <option value="Business Owner">बिज़नेस मालिक (Business Owner)</option>
+                            <option value="Content Creator">कंटेंट क्रिएटर (Content Creator)</option>
+                            <option value="Other">अन्य</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-black text-lg rounded-xl transition hover:scale-[1.02] shadow-xl uppercase">
+                        वर्कशॉप के लिए रजिस्टर करें
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Success Msg -->
+            <div id="successMsg" class="hidden glass-card p-10 rounded-3xl border border-green-500/30 text-center">
+                <div class="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-check text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">पंजीकरण सफल!</h3>
+                <p class="text-gray-400 mb-6 italic">अब नीचे दिए गए बटन पर क्लिक करके हमें WhatsApp पर मैसेज भेजें।</p>
+                <a id="waRedirect" href="#" class="inline-block px-8 py-3 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition shadow-lg">
+                    <i class="fab fa-whatsapp mr-2"></i> WhatsApp पर पुष्टि करें
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="py-16 px-4 bg-gradient-to-b from-transparent via-yellow-500/5 to-transparent">
+        <div class="max-w-md mx-auto gradient-border rounded-3xl p-10 text-center shadow-2xl overflow-hidden relative">
+            <div class="absolute -top-4 -right-4 bg-red-600 text-white px-8 py-2 rotate-12 font-bold text-sm shadow-lg">
+                50% छूट
+            </div>
+            
+            <h2 class="text-2xl font-bold mb-6">LIVE ट्रेनिंग फीस</h2>
+            <div class="flex justify-center items-center space-x-4 mb-4">
+                <span class="text-gray-500 text-2xl line-through">₹1999</span>
+                <span class="text-6xl font-black text-yellow-400">₹999</span>
+            </div>
+            <p class="text-gray-400 mb-8 font-medium italic">केवल आज रात तक के लिए उपलब्ध</p>
+            
+            <div class="space-y-4">
+                <a href="https://rzp.io/rzp/pbvRCE2" class="block w-full py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-black text-xl rounded-xl transition transform hover:scale-105 shadow-xl">
+                    <i class="fas fa-credit-card mr-2"></i> Razorpay से ₹999 पे करें
+                </a>
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-4">सुरक्षित भुगतान | 100% सुरक्षित</p>
+                <a href="https://wa.me/916376532440?text=Sir%20maine%20payment%20kar%20diya%20hai" class="block w-full py-4 bg-green-500/20 border border-green-500 text-green-400 font-bold text-lg rounded-xl transition transform hover:scale-105">
+                    <i class="fab fa-whatsapp mr-2"></i> WhatsApp पर स्क्रीनशॉट भेजें
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gray-800 text-center">
+        <p class="text-gray-500">© 2024 AI वीडियो मास्टरी LIVE | सर्वाधिकार सुरक्षित</p>
+        <p class="text-xs text-gray-600 mt-2 italic">Created by Tarun Kharwal Training Solutions</p>
+    </footer>
+
+    <!-- Floating Geo Bar -->
+    <div id="geoBar" class="fixed bottom-6 left-6 z-50 glass-card px-4 py-2 rounded-xl text-xs font-bold text-gray-300 border border-yellow-500/20 hidden md:block">
+        📍 राजस्थान से 2 लोग अभी जॉइन हुए
+    </div>
+
+    <!-- Mobile CTA -->
+    <div class="fixed bottom-0 left-0 w-full p-4 md:hidden z-50 bg-gradient-to-t from-black to-transparent">
+        <a href="https://rzp.io/rzp/pbvRCE2" class="flex items-center justify-center w-full py-4 bg-yellow-500 text-black font-bold rounded-2xl shadow-2xl animate-bounce">
+            🚀 अभी बुक करें (Razorpay)
+        </a>
+    </div>
+
+    <!-- Exit Popup -->
+    <div id="exitPopup" class="fixed inset-0 z-[1000] bg-black/90 hidden items-center justify-center px-4">
+        <div class="glass-card max-sm w-full p-8 rounded-3xl text-center border-2 border-yellow-500 relative">
+            <button onclick="closeExit()" class="absolute top-4 right-4 text-gray-500"><i class="fas fa-times"></i></button>
+            <div class="text-5xl mb-4">✋</div>
+            <h2 class="text-3xl font-black mb-4 text-yellow-400">रुको!</h2>
+            <p class="text-lg text-gray-300 mb-6">क्या आप सच में ये मौका छोड़ना चाहते हैं? कल इसी स्किल के लिए आप ₹5000 देंगे।</p>
+            <a href="https://rzp.io/rzp/pbvRCE2" class="block w-full py-4 bg-yellow-400 text-black font-black rounded-xl text-lg">
+                🔥 ₹999 में बुक करें
+            </a>
+            <p class="mt-4 text-sm text-gray-500 cursor-pointer" onclick="closeExit()">नहीं, मुझे मौका गवाना है</p>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = ""; 
+
+        // AI Assistant Logic (Hindi Prompting)
+        async function handleAICall(type) {
+            const topic = document.getElementById('aiTopic').value;
+            if (!topic) {
+                showSimpleToast("कृपया पहले टॉपिक लिखें!");
+                return;
+            }
+
+            const loaderId = type === 'script' ? 'scriptLoader' : 'hookLoader';
+            const textId = type === 'script' ? 'scriptText' : 'hookText';
+            const btnId = type === 'script' ? 'scriptBtn' : 'hookBtn';
+
+            document.getElementById(loaderId).classList.remove('hidden');
+            document.getElementById(textId).innerText = "AI सोच रहा है...";
+            document.getElementById(btnId).disabled = true;
+
+            const systemPrompt = "You are a viral Instagram Reel expert. Respond in clean Hindi Devnagari script. If asked for a script, provide a catchy 30-sec script. If hooks, provide 3 punchy lines. Use emojis.";
+            const userQuery = `${type === 'script' ? 'वायरल रील स्क्रिप्ट' : '3 वायरल हुक्स'} इस टॉपिक के लिए: ${topic}`;
+
+            let retryCount = 0;
+            const maxRetries = 5;
+
+            while (retryCount < maxRetries) {
+                try {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: userQuery }] }],
+                            systemInstruction: { parts: [{ text: systemPrompt }] }
+                        })
+                    });
+
+                    const data = await response.json();
+                    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                    if (text) {
+                        displayAIOutput(text, type);
+                        break;
+                    }
+                } catch (e) {
+                    retryCount++;
+                    await new Promise(r => setTimeout(r, Math.pow(2, retryCount) * 1000));
+                    if (retryCount === maxRetries) showSimpleToast("AI अभी व्यस्त है, बाद में प्रयास करें।");
+                }
+            }
+
+            document.getElementById(loaderId).classList.add('hidden');
+            document.getElementById(textId).innerText = type === 'script' ? '🎬 रील स्क्रिप्ट जनरेट करें' : '🔥 वायरल हुक्स जनरेट करें';
+            document.getElementById(btnId).disabled = false;
+        }
+
+        function displayAIOutput(text, type) {
+            const container = document.getElementById('aiResultContainer');
+            const resultText = document.getElementById('aiResultText');
+            const label = document.getElementById('resultLabel');
+
+            label.innerText = type === 'script' ? '✨ आपकी वायरल स्क्रिप्ट' : '✨ आपके वायरल हुक्स';
+            resultText.innerText = text;
+            container.classList.remove('hidden');
+            container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function copyToClipboard() {
+            const text = document.getElementById('aiResultText').innerText;
+            const temp = document.createElement("textarea");
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand("copy");
+            document.body.removeChild(temp);
+            showSimpleToast("कॉपी कर लिया गया है!");
+        }
+
+        function showSimpleToast(msg) {
+            const box = document.getElementById('notifyBox');
+            const content = document.getElementById('notifyContent');
+            content.innerText = msg;
+            box.classList.remove('hidden');
+            box.classList.add('flex');
+            setTimeout(() => { box.classList.add('hidden'); box.classList.remove('flex'); }, 3000);
+        }
+
+        document.getElementById('regForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const n = document.getElementById('name').value;
+            const p = document.getElementById('phone').value;
+            const w = document.getElementById('work').value;
+            const msg = `नमस्कार, मैंने AI वीडियो वर्कशॉप के लिए रजिस्टर किया है।\nनाम: ${n}\nनंबर: ${p}\nकाम: ${w}`;
+            const waLink = `https://wa.me/916376532440?text=${encodeURIComponent(msg)}`;
+            document.getElementById('formContainer').classList.add('hidden');
+            document.getElementById('successMsg').classList.remove('hidden');
+            document.getElementById('waRedirect').href = waLink;
+        });
+
+        // Timer
+        setInterval(() => {
+            const end = new Date(); end.setHours(23, 59, 59, 999);
+            const diff = end - new Date();
+            const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
+            const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+            const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+            document.getElementById('countdown').innerText = `${h}:${m}:${s}`;
+        }, 1000);
+
+        // Geobar rotate
+        const locs = ["📍 राजस्थान से 2 लोग जॉइन हुए", "📍 दिल्ली से पेमेंट रिसीव हुई", "📍 गुजरात से एक टीचर ने जॉइन किया"];
+        let gIdx = 0;
+        setInterval(() => {
+            document.getElementById('geoBar').innerText = locs[gIdx];
+            gIdx = (gIdx + 1) % locs.length;
+        }, 6000);
+
+        // Seats
+        let seats = 17;
+        setInterval(() => { if(seats > 2) { seats--; document.getElementById('seats').innerText = seats; } }, 45000);
+
+        // Exit intent
+        let ex = false;
+        document.addEventListener('mouseleave', (e) => {
+            if (e.clientY < 0 && !ex) { document.getElementById('exitPopup').style.display = 'flex'; ex = true; }
+        });
+        function closeExit() { document.getElementById('exitPopup').style.display = 'none'; }
+    </script>
+</body>
+</html>
